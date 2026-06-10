@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pre-screen — Q-Chang B2B</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#18181A;--ink2:#52525A;--ink3:#A0A0AA;--paper:#F7F6F2;--surface:#FFF;--rule:#E4E3DC;--rule2:#CCCBBF;--accent:#D64F2A;--accent-l:#FDF0EC;--green:#1A6B44;--green-l:#E8F5EE;--amber:#9A5800;--amber-l:#FFF4E0;--r:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'IBM Plex Sans Thai',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;min-height:100vh}
+button{font-family:'IBM Plex Sans Thai',sans-serif;cursor:pointer}
+input,select,textarea{font-family:'IBM Plex Sans Thai',sans-serif}
+
+.topbar{background:var(--ink);color:#fff;padding:0 40px;height:52px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100}
+.topbar-logo{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.topbar-sep{width:1px;height:16px;background:rgba(255,255,255,.2);margin:0 4px}
+.topbar-sub{font-size:12px;color:rgba(255,255,255,.5)}
+.topbar-step{background:var(--accent);font-size:10px;font-weight:500;padding:3px 10px;border-radius:20px;letter-spacing:.04em}
+.topbar-sp{flex:1}
+.topbar-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:6px;padding:6px 14px;font-size:12px;transition:background .15s}
+.topbar-btn:hover{background:rgba(255,255,255,.2)}
+
+.page{max-width:1060px;margin:0 auto;padding:28px 24px 80px}
+.dash-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px}
+.dash-title{font-size:22px;font-weight:600;letter-spacing:-.02em}
+.dash-sub{font-size:13px;color:var(--ink2);margin-top:3px}
+.btn-primary{background:var(--ink);color:#fff;border:none;border-radius:var(--r);padding:10px 20px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:7px;transition:background .15s}
+.btn-primary:hover{background:#333}
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
+.stat-card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r);padding:14px 18px}
+.stat-n{font-size:26px;font-weight:600;font-family:'IBM Plex Mono',monospace}
+.stat-l{font-size:11px;color:var(--ink2);margin-top:2px}
+
+.filter-row{display:flex;gap:6px;margin-bottom:14px}
+.filter-btn{font-size:12px;padding:5px 14px;border-radius:20px;border:1px solid var(--rule2);background:var(--surface);color:var(--ink2);transition:all .15s}
+.filter-btn:hover{background:var(--paper)}
+.filter-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.proj-card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r);padding:16px 18px;cursor:pointer;transition:all .15s;position:relative}
+.proj-card:hover{border-color:var(--rule2);box-shadow:0 4px 20px rgba(0,0,0,.06);transform:translateY(-1px)}
+.proj-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;gap:8px}
+.proj-name{font-size:14px;font-weight:500}
+.proj-client{font-size:12px;color:var(--ink2);margin-top:2px}
+.status-pill{font-size:10px;padding:3px 9px;border-radius:10px;font-weight:500;white-space:nowrap;flex-shrink:0}
+.proj-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.proj-meta-i{font-size:11px;color:var(--ink3)}
+.proj-bar-wrap{margin-top:10px}
+.proj-bar{height:3px;background:var(--rule);border-radius:2px;overflow:hidden;margin-bottom:4px}
+.proj-bar-fill{height:100%;background:var(--green);border-radius:2px;transition:width .3s}
+.proj-bar-label{font-size:10px;color:var(--ink3);font-family:'IBM Plex Mono',monospace}
+.proj-del{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:4px;border:1px solid var(--rule);background:none;color:var(--ink3);font-size:11px;display:none;align-items:center;justify-content:center}
+.proj-card:hover .proj-del{display:flex}
+.proj-del:hover{background:var(--accent-l);color:var(--accent);border-color:var(--accent)}
+
+.empty{background:var(--surface);border:1.5px dashed var(--rule2);border-radius:var(--r);padding:52px 20px;text-align:center;grid-column:1/-1}
+.empty-icon{font-size:32px;margin-bottom:12px;opacity:.3}
+.empty-t{font-size:15px;color:var(--ink2);margin-bottom:4px}
+.empty-s{font-size:12px;color:var(--ink3);margin-bottom:20px}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.overlay.show{opacity:1;pointer-events:all}
+.modal{background:var(--surface);border-radius:12px;padding:28px;width:460px;max-width:92vw;box-shadow:0 24px 60px rgba(0,0,0,.18);transform:translateY(8px);transition:transform .2s}
+.overlay.show .modal{transform:translateY(0)}
+.modal-title{font-size:17px;font-weight:600;margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--ink2);margin-bottom:20px}
+.form-field{margin-bottom:14px}
+.form-label{font-size:10px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;display:block}
+.form-input{width:100%;border:1px solid var(--rule2);border-radius:6px;padding:9px 12px;font-size:13px;background:var(--paper);color:var(--ink);outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--ink);background:var(--surface)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+.btn-cancel{background:none;border:1px solid var(--rule2);border-radius:6px;padding:8px 16px;font-size:13px;color:var(--ink2)}
+.btn-submit{background:var(--ink);color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:13px;font-weight:500}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;border-radius:8px;padding:10px 18px;font-size:13px;z-index:999;transition:transform .3s;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-logo">Q-Chang B2B</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-sub">Pre-Construction</div>
+  <div class="topbar-sp"></div>
+  <button class="topbar-btn" onclick="logout()">ออกจากระบบ</button>
+</div>
+
+<div class="page">
+  <div class="dash-header">
+    <div>
+      <div class="dash-title">โครงการทั้งหมด</div>
+      <div class="dash-sub">Pre-screen checklist รายโครงการ</div>
+    </div>
+    <button class="btn-primary" onclick="openNew()">＋ โครงการใหม่</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-n" id="st-total">0</div><div class="stat-l">โครงการทั้งหมด</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--green)" id="st-ready">0</div><div class="stat-l">พร้อมแล้ว</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--amber)" id="st-partial">0</div><div class="stat-l">รอข้อมูลเพิ่ม</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--accent)" id="st-park">0</div><div class="stat-l">Park / ไม่ผ่าน</div></div>
+  </div>
+
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setFilter('all',this)">ทั้งหมด</button>
+    <button class="filter-btn" onclick="setFilter('พร้อม',this)">พร้อม</button>
+    <button class="filter-btn" onclick="setFilter('รอข้อมูล',this)">รอข้อมูล</button>
+  </div>
+
+  <div class="proj-grid" id="proj-grid"></div>
+</div>
+
+<div class="overlay" id="modal-new">
+  <div class="modal">
+    <div class="modal-title">โครงการใหม่</div>
+    <div class="modal-sub">กรอกข้อมูลเบื้องต้นก่อนเริ่ม pre-screen</div>
+    <div class="form-field"><label class="form-label">ชื่อโครงการ *</label><input class="form-input" id="np-name" placeholder="เช่น รีโนเวทห้องน้ำ สาขาลาดพร้าว"></div>
+    <div class="form-field"><label class="form-label">ชื่อบริษัทลูกค้า *</label><input class="form-input" id="np-client" placeholder="ชื่อบริษัทตามทะเบียน"></div>
+    <div class="form-row">
+      <div class="form-field"><label class="form-label">Lead Source</label><select class="form-input" id="np-source"><option value="">เลือก</option><option>Old Customer (P1)</option><option>Connection / Referral (P1)</option><option>Web Lead Form (P2)</option></select></div>
+      <div class="form-field"><label class="form-label">Sales</label><input class="form-input" id="np-sales" placeholder="ชื่อ sales"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-field"><label class="form-label">งบประมาณโดยประมาณ</label><input class="form-input" id="np-budget" placeholder="เช่น 2-5 ล้านบาท"></div>
+      <div class="form-field"><label class="form-label">วันที่รับเรื่อง</label><input class="form-input" type="date" id="np-date"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">ยกเลิก</button>
+      <button class="btn-submit" onclick="createProj()">สร้างโครงการ →</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── AUTH CHECK ──────────────────────────────────
+if(!localStorage.getItem('qc_auth')){location.href='login.html'}
+function logout(){localStorage.removeItem('qc_auth');location.href='login.html'}
+
+const SUPA_URL='https://zgcvjrwnhtpvhevnoeqs.supabase.co'
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnY3ZqcnduaHRwdmhldm5vZXFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5ODMwMTQsImV4cCI6MjA5NjU1OTAxNH0.zAoLV-som-K01WaFhSzsbgavwL2xf_iPoBhzNgN9zUM'
+const SUPA_H={'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json'}
+
+// cache สำหรับ sync เร็ว
+let _cache=null
+
+async function DB(k){
+  if(k!=='projects') return []
+  try{
+    const r=await fetch(`${SUPA_URL}/rest/v1/projects?select=*&order=created_at.desc`,{headers:SUPA_H})
+    if(!r.ok) return _cache||[]
+    _cache=await r.json()
+    return _cache
+  }catch(e){console.error(e);return _cache||[]}
+}
+
+async function DBs(k,v){
+  if(k!=='projects') return
+  // upsert ทีละ record
+  for(const p of v){
+    await fetch(`${SUPA_URL}/rest/v1/projects`,{
+      method:'POST',
+      headers:{...SUPA_H,'Prefer':'resolution=merge-duplicates'},
+      body:JSON.stringify(p)
+    })
+  }
+}
+
+async function DBdel(id){
+  await fetch(`${SUPA_URL}/rest/v1/projects?id=eq.${id}`,{
+    method:'DELETE',headers:SUPA_H
+  })
+}
+
+async function DBinsert(p){
+  const r=await fetch(`${SUPA_URL}/rest/v1/projects`,{
+    method:'POST',
+    headers:{...SUPA_H,'Prefer':'return=representation'},
+    body:JSON.stringify(p)
+  })
+  if(!r.ok) return null
+  const rows=await r.json()
+  return rows[0]||null
+}
+
+let filter='all'
+function setFilter(f,btn){filter=f;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderGrid()}
+
+const STATUS_STYLE={'พร้อม':['#E8F5EE','#1A6B44'],'รอข้อมูล':['#FFF4E0','#9A5800'],'Park':['#FDF0EC','#D64F2A'],'ยังไม่ประเมิน':['#F7F6F2','#A0A0AA']}
+const SRC_ICON={'Old Customer (P1)':'⭐','Connection / Referral (P1)':'🤝','Web Lead Form (P2)':'🌐'}
+
+function calcPct(p){
+  const checks=p.checks||{}
+  let done=0,total=0
+  Object.values(checks).forEach(v=>{total++;if(v)done++})
+  return total?Math.round(done/total*100):0
+}
+
+function showLoading(show){
+  const grid=document.getElementById('proj-grid')
+  if(show) grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:#A0A0AA;font-size:13px">กำลังโหลด...</div>'
+}
+
+async function renderGrid(){
+  showLoading(true)
+  const ps=await DB('projects')
+  const filtered=filter==='all'?ps:ps.filter(p=>(p.readiness||'ยังไม่ประเมิน')===filter||(filter==='Park'&&p.readiness==='Park'))
+  document.getElementById('st-total').textContent=ps.length
+  document.getElementById('st-ready').textContent=ps.filter(p=>p.readiness==='พร้อม').length
+  document.getElementById('st-partial').textContent=ps.filter(p=>p.readiness==='รอข้อมูล').length
+  document.getElementById('st-park').textContent=ps.filter(p=>p.readiness==='Park').length
+  const grid=document.getElementById('proj-grid')
+  if(!filtered.length){
+    grid.innerHTML=`<div class="empty"><div class="empty-icon">📋</div><div class="empty-t">ยังไม่มีโครงการ</div><div class="empty-s">กด "โครงการใหม่" เพื่อเริ่ม pre-screen</div><button class="btn-primary" style="margin:0 auto" onclick="openNew()">＋ โครงการใหม่</button></div>`
+    return
+  }
+  grid.innerHTML=filtered.map(p=>{
+    const pct=calcPct(p)
+    const st=p.readiness||'ยังไม่ประเมิน'
+    const [sbg,stxt]=STATUS_STYLE[st]||['#F7F6F2','#A0A0AA']
+    const src=SRC_ICON[p.source]||''
+    return `<div class="proj-card" onclick="openProj('${p.id}')">
+      <div class="proj-card-top">
+        <div><div class="proj-name">${p.name}</div><div class="proj-client">${p.client||'—'}</div></div>
+        <span class="status-pill" style="background:${sbg};color:${stxt}">${st}</span>
+      </div>
+      <div class="proj-meta">
+        ${src?`<span class="proj-meta-i">${src} ${p.source}</span>`:''}
+        ${p.sales?`<span class="proj-meta-i">👤 ${p.sales}</span>`:''}
+        ${p.budget?`<span class="proj-meta-i">💰 ${p.budget}</span>`:''}
+        ${p.date?`<span class="proj-meta-i">📅 ${p.date}</span>`:''}
+      </div>
+      <div class="proj-bar-wrap">
+        <div class="proj-bar"><div class="proj-bar-fill" style="width:${pct}%"></div></div>
+        <div class="proj-bar-label">${pct}% complete</div>
+      </div>
+      <button class="proj-del" onclick="event.stopPropagation();delProj('${p.id}')">🗑</button>
+    </div>`
+  }).join('')
+}
+
+function openNew(){
+  ['np-name','np-client','np-sales','np-budget'].forEach(id=>document.getElementById(id).value='')
+  document.getElementById('np-source').value=''
+  document.getElementById('np-date').value=new Date().toISOString().split('T')[0]
+  document.getElementById('modal-new').classList.add('show')
+}
+function closeModal(){document.getElementById('modal-new').classList.remove('show')}
+
+async function createProj(){
+  const name=document.getElementById('np-name').value.trim()
+  const client=document.getElementById('np-client').value.trim()
+  if(!name){toast('กรุณากรอกชื่อโครงการ');return}
+  const p={name,client,
+    source:document.getElementById('np-source').value,
+    sales:document.getElementById('np-sales').value,
+    budget:document.getElementById('np-budget').value,
+    date:document.getElementById('np-date').value,
+    readiness:'ยังไม่ประเมิน',
+    checks:{},fields:{},oral:{}}
+  const newProj=await DBinsert(p)
+  if(!newProj){toast('เกิดข้อผิดพลาด ลองใหม่อีกครั้ง');return}
+  closeModal();toast('สร้างโครงการสำเร็จ ✓')
+  setTimeout(()=>openProj(newProj.id),600)
+}
+
+async function delProj(id){
+  if(!confirm('ลบโครงการนี้?'))return
+  await DBdel(id);renderGrid();toast('ลบแล้ว')
+}
+
+function openProj(id){window.location.href='form.html?id='+id}
+
+document.getElementById('modal-new').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()})
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()})
+document.getElementById('np-name').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('np-client').focus()})
+
+let _tt;function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2400)}
+
+renderGrid()
+</script>
+</body>
+</html>
