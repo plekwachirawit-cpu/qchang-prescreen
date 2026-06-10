@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Q-Chang B2B — เข้าสู่ระบบ</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(140deg,#0D3D2E 0%,#1A5C45 45%,#0F4434 100%);position:relative;overflow:hidden}
+
+.bg-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:36px 36px;pointer-events:none}
+.bg-glow{position:absolute;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(45,138,105,.25) 0%,transparent 70%);
+  top:-100px;left:-100px;pointer-events:none}
+.bg-glow2{position:absolute;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(83,74,183,.15) 0%,transparent 70%);
+  bottom:-80px;right:-60px;pointer-events:none}
+
+.card{
+  position:relative;z-index:1;width:400px;max-width:92vw;
+  background:rgba(255,255,255,.07);backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.13);border-radius:18px;
+  padding:44px 40px;box-shadow:0 40px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.1)}
+
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:36px}
+.logo-mark{width:40px;height:40px;background:linear-gradient(135deg,#2D8A69,#1A5C45);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:700;color:#fff;box-shadow:0 4px 12px rgba(29,158,117,.4)}
+.logo-text{font-size:19px;font-weight:600;color:#fff;letter-spacing:-.01em}
+.logo-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px;letter-spacing:.02em}
+
+h1{font-size:24px;font-weight:600;color:#fff;margin-bottom:6px}
+.subtitle{font-size:13px;color:rgba(255,255,255,.45);margin-bottom:30px}
+
+.field{margin-bottom:18px}
+.label{display:block;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);
+  letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px}
+.input{width:100%;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);
+  border-radius:9px;padding:12px 15px;color:#fff;font-size:14px;font-family:'Sarabun',sans-serif;
+  outline:none;transition:border-color .2s,background .2s}
+.input::placeholder{color:rgba(255,255,255,.28)}
+.input:focus{border-color:rgba(45,138,105,.8);background:rgba(255,255,255,.12)}
+
+.btn-login{width:100%;background:linear-gradient(135deg,#2D8A69,#1A5C45);border:none;
+  border-radius:9px;padding:13px;color:#fff;font-size:15px;font-weight:600;
+  font-family:'Sarabun',sans-serif;cursor:pointer;margin-top:4px;
+  box-shadow:0 4px 16px rgba(29,158,117,.35);transition:all .2s}
+.btn-login:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(29,158,117,.45)}
+.btn-login:active{transform:translateY(0)}
+
+.err{font-size:12px;color:#ff8a80;margin-top:12px;text-align:center;min-height:18px;
+  background:rgba(255,80,80,.1);border-radius:6px;padding:6px 10px;display:none}
+.err.show{display:block}
+
+.users-section{margin-top:28px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08)}
+.users-title{font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.users-grid{display:flex;flex-direction:column;gap:7px}
+.user-pill{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  border-radius:9px;padding:9px 13px;cursor:pointer;transition:all .15s}
+.user-pill:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15)}
+.u-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:600;color:#fff;flex-shrink:0}
+.u-name{font-size:13px;color:rgba(255,255,255,.8);font-weight:500;flex:1}
+.u-role{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;letter-spacing:.03em}
+
+.version{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+  font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.05em;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow2"></div>
+
+<div class="card">
+  <div class="logo">
+    <div class="logo-mark">Q</div>
+    <div>
+      <div class="logo-text">Q-Chang B2B</div>
+      <div class="logo-sub">Pre-Construction System</div>
+    </div>
+  </div>
+
+  <h1>เข้าสู่ระบบ</h1>
+  <div class="subtitle">กรอกชื่อผู้ใช้และรหัสผ่านเพื่อเข้าใช้งาน</div>
+
+  <div class="field">
+    <label class="label">Username</label>
+    <input class="input" id="inp-user" placeholder="ชื่อผู้ใช้" autocomplete="username">
+  </div>
+  <div class="field">
+    <label class="label">Password</label>
+    <input class="input" id="inp-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+  </div>
+  <button class="btn-login" onclick="doLogin()">เข้าสู่ระบบ →</button>
+  <div class="err" id="err-msg">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</div>
+
+  <div class="users-section">
+    <div class="users-title">Quick Login — คลิกเพื่อเลือก</div>
+    <div class="users-grid" id="users-list"></div>
+  </div>
+</div>
+
+<div class="version">Q-Chang B2B v2.0 · Pre-Construction Workflow</div>
+
+<script>
+const ROLE_COLOR={admin:'#1D9E75',editor:'#534AB7',viewer:'#BA7517'};
+const ROLE_BG={admin:'rgba(29,158,117,.2)',editor:'rgba(83,74,183,.2)',viewer:'rgba(186,117,23,.2)'};
+const ROLE_LABEL={admin:'Admin',editor:'Editor',viewer:'Viewer'};
+
+function DB(k,def){try{return JSON.parse(localStorage.getItem('qc_'+k))??def}catch{return def}}
+function DBset(k,v){localStorage.setItem('qc_'+k,JSON.stringify(v))}
+
+function initDefaultData(){
+  if(!DB('users',null)){
+    DBset('users',[
+      {id:'u1',name:'Admin หลัก',username:'admin',password:'admin123',role:'admin',color:'#1D9E75'},
+      {id:'u2',name:'Sales Manager',username:'sales',password:'sales123',role:'editor',color:'#534AB7'},
+      {id:'u3',name:'PM ทีมงาน',username:'pm',password:'pm123',role:'editor',color:'#D85A30'},
+      {id:'u4',name:'Viewer ทั่วไป',username:'view',password:'view123',role:'viewer',color:'#BA7517'},
+    ])
+  }
+  if(!DB('projects',null)) DBset('projects',[])
+}
+
+function renderUsers(){
+  const users=DB('users',[])
+  document.getElementById('users-list').innerHTML=users.map(u=>`
+    <div class="user-pill" onclick="quickLogin('${u.username}','${u.password}')">
+      <div class="u-avatar" style="background:${u.color}">${u.name[0]}</div>
+      <div class="u-name">${u.name}</div>
+      <span class="u-role" style="background:${ROLE_BG[u.role]};color:${ROLE_COLOR[u.role]}">${ROLE_LABEL[u.role]}</span>
+    </div>`).join('')
+}
+
+function quickLogin(user,pass){
+  document.getElementById('inp-user').value=user
+  document.getElementById('inp-pass').value=pass
+  doLogin()
+}
+
+function doLogin(){
+  const u=document.getElementById('inp-user').value.trim()
+  const p=document.getElementById('inp-pass').value
+  const users=DB('users',[])
+  const found=users.find(x=>x.username===u&&x.password===p)
+  const errEl=document.getElementById('err-msg')
+  if(!found){errEl.classList.add('show');return}
+  errEl.classList.remove('show')
+  DBset('session',found.id)
+  window.location.href='dashboard.html'
+}
+
+document.getElementById('inp-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()})
+document.getElementById('inp-user').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('inp-pass').focus()})
+
+initDefaultData()
+renderUsers()
+
+// redirect if already logged in
+const sid=DB('session',null)
+if(sid&&DB('users',[]).find(u=>u.id===sid)) window.location.href='dashboard.html'
+</script>
+</body>
+</html>
